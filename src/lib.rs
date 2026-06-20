@@ -89,7 +89,7 @@ impl LegacyTransactionBuilder {
 
     pub fn lock_time(mut self, lock_time: u32) -> Self {
         self.lock_time = lock_time;
-        self    
+        self
     }
 
     pub fn build(self) -> LegacyTransaction {
@@ -130,9 +130,13 @@ pub fn parse_cli_args(args: &[String]) -> Result<CliCommand, BitcoinError> {
     match args[0].as_str() {
         "send" => {
             if args.len() != 3 {
-                return Err(BitcoinError::ParseError("Usage: send <amount> <address>".to_string()));
+                return Err(BitcoinError::ParseError(
+                    "Usage: send <amount> <address>".to_string(),
+                ));
             }
-            let amount = args[1].parse::<u64>().map_err(|_| BitcoinError::InvalidAmount)?;
+            let amount = args[1]
+                .parse::<u64>()
+                .map_err(|_| BitcoinError::InvalidAmount)?;
             let address = args[2].clone();
             Ok(CliCommand::Send { amount, address })
         }
